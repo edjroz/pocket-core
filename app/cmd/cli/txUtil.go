@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+
 	"github.com/pokt-network/pocket-core/app"
 	"github.com/pokt-network/pocket-core/app/cmd/rpc"
 	appsType "github.com/pokt-network/pocket-core/x/apps/types"
@@ -11,6 +12,7 @@ import (
 	pocketTypes "github.com/pokt-network/pocket-core/x/pocketcore/types"
 	"github.com/pokt-network/posmint/codec"
 	"github.com/pokt-network/posmint/crypto/keys"
+
 	//"github.com/pokt-network/posmint/crypto/keys/mintkey"
 	sdk "github.com/pokt-network/posmint/types"
 	"github.com/pokt-network/posmint/x/auth"
@@ -247,6 +249,7 @@ func DAOTx(fromAddr, toAddr, passphrase string, amount sdk.Int, action, chainID 
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("msg validated")
 	txBz, err := newTxBz(app.Codec(), msg, fa, chainID, kb, passphrase, fees)
 	if err != nil {
 		return nil, err
@@ -323,6 +326,10 @@ func newTxBz(cdc *codec.Codec, msg sdk.Msg, fromAddr sdk.Address, chainID string
 	fees := sdk.NewCoins(sdk.NewCoin(sdk.DefaultStakeDenom, sdk.NewInt(fee)))
 	// entroyp
 	entropy := common.RandInt64()
+	fmt.Println(chainID)
+	fmt.Println(entropy)
+	fmt.Println(fees)
+	fmt.Println(msg)
 	signBytes, err := auth.StdSignBytes(chainID, entropy, fees, msg, "")
 	if err != nil {
 		return nil, err
